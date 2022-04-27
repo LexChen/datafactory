@@ -1,11 +1,16 @@
 本项目可以实现向任意数据库中按照配置要求插入测试数据。
 
-使用帮助请参见《DataFactory 使用手册》
-因为部分依赖jar包不在任何maven库中，因此本项目直接引入了本地依赖
-所有依赖均在out/artifacts/datafactory_jar/目录下（除datafacoty.jar）
-如果只想下载执行码，可按照如下步骤操作：
-1)本地建立一个目录,名称位置任意，例如 /datafactory
-2)在该目录下建立一个子目录libs，例如 /datafactory/libs
-3)将out/artifacts/datafactory_jar/目录下所有文件下载到/datafactory/libs
-4)将resources目录下两个文件下载到 /datafactory 目录
-5)运行makedata.sh即可启动应用
+依赖包如下（部分包在任何maven库中都没有）：
+
+db2jcc4.jar
+mssql-jdbc-9.4.0.jre8.jar
+mysql-connector-java-8.0.18.jar
+ojdbc6-11.2.0.3.jar
+postgresql-42.2.16.jar
+sqlite-jdbc-3.34.0.jar
+gsjdbc200.jar
+
+可执行包、使用手册及依赖包，下载地址：
+
+链接: https://pan.baidu.com/s/1Sa9gXW4ShD6SiZsVQcgZQQ 
+提取码: gxui 
