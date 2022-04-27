@@ -1,0 +1,9 @@
+使用帮助请参见《DataFactory 使用手册》
+因为部分依赖jar包不在任何maven库中，因此本项目直接引入了本地依赖
+所有依赖均在out/artifacts/datafactory_jar/目录下（除datafacoty.jar）
+如果只想下载执行码，可按照如下步骤操作：
+1)本地建立一个目录,名称位置任意，例如 /datafactory
+2)在该目录下建立一个子目录libs，例如 /datafactory/libs
+3)将out/artifacts/datafactory_jar/目录下所有文件下载到/datafactory/libs
+4)将resources目录下两个文件下载到 /datafactory 目录
+5)运行makedata.sh即可启动应用

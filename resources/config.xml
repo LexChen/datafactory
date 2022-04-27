@@ -1,0 +1,663 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <drivers>
+        <!-- jdbc:oracle:thin:@[host]:[port]:[sid]"或"jdbc:oracle:thin:@[host]:[port]/[service name] -->
+        <driver id="oracle">oracle.jdbc.driver.OracleDriver</driver>
+        <!-- jdbc:mysql://[host]:[port]/[database]?useUnicode=true&characterEncoding=utf8&&rewriteBatchedStatements=true -->
+        <driver id="mysql">com.mysql.cj.jdbc.Driver</driver>
+        <!-- jdbc:postgresql://[host]:[port]/[database] -->
+        <driver id="postgresql">org.postgresql.Driver</driver>
+        <!-- jdbc:gaussdb://[host]:[port]/[database] -->
+        <driver id="gauss">com.huawei.gauss200.jdbc.Driver</driver>
+        <!-- jdbc:db2://[host]:[port]/[database] -->
+        <driver id="db2">com.ibm.db2.jcc.DB2Driver</driver>
+        <!-- jdbc:sqlserver://[host]:[port];databaseName=[database] -->
+        <driver id="sqlserver">com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+        <!-- jdbc:sqlite:[path] -->
+        <driver id="sqlite">org.sqlite.JDBC</driver>
+    </drivers>
+    <connections>
+        <connection id="oracle">
+            <driver>oracle</driver>
+            <url><![CDATA[jdbc:oracle:thin:@127.0.0.1:1521:sid1]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+                <pre>ALTER SESSION SET NLS_DATE_FORMAT='YYYY-MM-DD HH24:MI:SS'</pre>
+                <pre>ALTER SESSION SET NLS_TIMESTAMP_FORMAT='YYYY-MM-DD HH24:MI:SSXFF'</pre>
+                <pre>ALTER SESSION SET NLS_TIMESTAMP_TZ_FORMAT='YYYY-MM-DD HH24:MI:SSXFF TZH:TZM'</pre>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="mysql">
+            <driver>mysql</driver>
+            <url><![CDATA[jdbc:mysql://127.0.0.1:3306/testdb?useUnicode=true&characterEncoding=utf8&&rewriteBatchedStatements=true]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="gauss">
+            <driver>gauss</driver>
+            <url><![CDATA[jdbc:gaussdb://127.0.0.1:8000/testdb]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="postgres">
+            <driver>postgresql</driver>
+            <url><![CDATA[jdbc:postgresql://127.0.0.1:5432/testdb]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="sqlite">
+            <driver>sqlite</driver>
+            <url><![CDATA[jdbc:sqlite:/tmp/test_db.sqlite3]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="sqlserver">
+            <driver>sqlserver</driver>
+            <url><![CDATA[jdbc:sqlserver://127.0.0.1:1433;databaseName=testdb]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+        <connection id="db2">
+            <driver>db2</driver>
+            <url><![CDATA[jdbc:db2://127.0.0.1:50000/testdb]]></url>
+            <username>test</username>
+            <password>test</password>
+            <pres>
+            </pres>
+            <posts>
+            </posts>
+        </connection>
+    </connections>
+    <options>
+        <threads value="2"/>
+        <drop value="true"/>
+        <truncate value="true"/>
+        <create value="true"/>
+        <autoshow value="true"/>
+        <interval value="30000"/>
+        <batch>2000</batch>
+    </options>
+    <tasks>
+        <task id="m1" exec="false" connection="mysql" method="insert">
+            <tables>
+                <table>r1_mysql</table>
+                <table main="false">r2_mysql</table>
+            </tables>
+            <options>
+            </options>
+        </task>
+        <task id="t1" exec="false" connection="oracle" method="insert">
+            <tables>
+                <table>test_ora</table>
+            </tables>
+            <options>
+            </options>
+        </task>
+        <task id="t2" exec="false" connection="mysql" method="load">
+            <tables>
+                <table>test_mysql</table>
+            </tables>
+            <options>
+                <count>100000</count>
+                <batch>2000</batch>
+            </options>
+        </task>
+        <task id="t3" exec="true" connection="gauss" method="copy">
+            <tables>
+                <table>test_gauss</table>
+            </tables>
+            <options>
+                <count>100000</count>
+                <batch>2000</batch>
+            </options>
+        </task>
+        <task id="t4" exec="false" connection="postgres" method="insert">
+            <tables>
+                <table>test_pg</table>
+            </tables>
+            <options>
+            </options>
+        </task>
+        <task id="t5" exec="false" connection="sqlite" method="file">
+            <tables>
+                <table>test_sqlite</table>
+            </tables>
+            <options>
+            </options>
+        </task>
+        <task id="t6" exec="false" connection="sqlserver" method="insert">
+            <tables>
+                <table>test_sqlserver</table>
+            </tables>
+            <options>
+                <batch value="2000"/>
+            </options>
+        </task>
+        <task id="t7" exec="false" connection="db2" method="insert">
+            <tables>
+                <table>test_db2</table>
+            </tables>
+            <options>
+                <batch value="100"/>
+            </options>
+        </task>
+    </tasks>
+    <tables>
+        <table name="test_mysql">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>int not null default 1</dbtype>
+                <increment>
+                    <start>1</start>
+                    <end>1000000</end>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>bigint</dbtype>
+                <skip/>
+            </column>
+            <column name="col2" type="long">
+                <dbtype>bigint</dbtype>
+                <fixed>1245</fixed>
+            </column>
+            <column name="col3" type="long">
+                <dbtype>bigint</dbtype>
+                <random>
+                    <start>1</start>
+                    <end>10000</end>
+                </random>
+            </column>
+            <column name="col4" type="long">
+                <dbtype>bigint</dbtype>
+                <list>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </list>
+            </column>
+            <column name="col5" type="long">
+                <dbtype>bigint</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col6" type="long">
+                <dbtype>bigint</dbtype>
+                <ratio>
+                    <item ratio="1">1</item>
+                    <item ratio="1">2</item>
+                    <item ratio="1">3</item>
+                </ratio>
+            </column>
+            <column name="col7" type="char">
+                <dbtype>char(10)</dbtype>
+                <random>
+                    <min>4</min>
+                    <max>10</max>
+                    <candidates>??ascii</candidates>
+                    <prefix>LD</prefix>
+                    <suffix>Z</suffix>
+                </random>
+            </column>
+            <column name="col8" type="varchar">
+                <dbtype>bigint</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col9" type="blob">
+                <dbtype>blob</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>>??latin1</candidates>
+                </random>
+            </column>
+            <column name="col91" type="varchar">
+                <dbtype>varchar(20)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>20</max>
+                    <candidates>??latin1</candidates>
+                </random>
+            </column>
+            <column name="col10" type="date">
+                <dbtype>date</dbtype>
+                <random>
+                    <min>2020-01-01</min>
+                    <max>2020-03-01</max>
+                    <step>2d</step>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+        </table>
+        <table name="test_ora">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : short int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>int not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <increment>
+                    <start>1</start>
+                    <end>10000</end>
+                    <step>2</step>
+                </increment>
+            </column>
+            <column name="col2" type="long">
+                <dbtype>decimal</dbtype>
+                <fixed>1245</fixed>
+            </column>
+            <column name="col3" type="long">
+                <dbtype>decimal</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10000</max>
+                </random>
+            </column>
+            <column name="col4" type="long">
+                <dbtype>decimal</dbtype>
+                <list>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </list>
+            </column>
+            <column name="col5" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col6" type="long">
+                <dbtype>decimal</dbtype>
+                <ratio>
+                    <item ratio="1">1</item>
+                    <item ratio="1">2</item>
+                    <item ratio="1">3</item>
+                </ratio>
+            </column>
+            <column name="col7" type="char">
+                <dbtype>decimal</dbtype>
+                <ratio>
+                    <item ratio="1">1</item>
+                    <item ratio="1">2</item>
+                    <item ratio="1">3</item>
+                </ratio>
+            </column>
+            <column name="col8" type="varchar">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col9" type="blob">
+                <dbtype>blob</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??latin1</candidates>
+                </random>
+            </column>
+            <column name="col91" type="varchar">
+                <dbtype>varchar2(20)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>20</max>
+                    <candidates>??latin1</candidates>
+                </random>
+            </column>
+            <column name="col92" type="varchar">
+                <dbtype>varchar2(20)</dbtype>
+                <list>
+                    <item>abc</item>
+                    <item>0x303132</item>
+                </list>
+            </column>
+            <column name="col10" type="date">
+                <dbtype>timestamp</dbtype>
+                <random>
+                    <min>2020-01-01</min>
+                    <max>2020-03-01</max>
+                    <step>2d</step>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+
+            </posts>
+        </table>
+        <table name="test_gauss">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="long" nullable="0">
+                <dbtype>bigint not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <end>1000000</end>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col2" type="char">
+                <dbtype>bpchar(6)</dbtype>
+                <ratio>
+                    <item ratio="1">male</item>
+                    <item ratio="1">female</item>
+                </ratio>
+            </column>
+            <column name="col9" type="blob">
+                <dbtype>bytea</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>100</max>
+                    <candidates>??ascii</candidates>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+            </posts>
+        </table>
+        <table name="test_pg">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>smallint not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col2" type="char">
+                <dbtype>bpchar(6)</dbtype>
+                <ratio>
+                    <item ratio="1">male</item>
+                    <item ratio="1">female</item>
+                </ratio>
+            </column>
+            <column name="col3" type="blob">
+                <dbtype>bytea</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??ascii</candidates>
+                </random>
+            </column>
+            <column name="col4" type="varchar">
+                <dbtype>varchar(64)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??uuid</candidates>
+                </random>
+            </column>
+            <column name="col5" type="varchar">
+                <dbtype>varchar(18)</dbtype>
+                <random>
+                    <min></min>
+                    <max></max>
+                    <candidates>??id</candidates>
+                </random>
+            </column>
+            <column name="col6" type="varchar">
+                <dbtype>varchar(11)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??mobile</candidates>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+            </posts>
+        </table>
+        <table name="test_sqlite">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>smallint not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col2" type="char">
+                <dbtype>char(6)</dbtype>
+                <ratio>
+                    <item ratio="1">male</item>
+                    <item ratio="1">female</item>
+                </ratio>
+            </column>
+            <column name="col4" type="varchar">
+                <dbtype>varchar(64)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??uuid</candidates>
+                </random>
+            </column>
+            <column name="col5" type="varchar">
+                <dbtype>varchar(18)</dbtype>
+                <random>
+                    <min></min>
+                    <max></max>
+                    <candidates>??id</candidates>
+                </random>
+            </column>
+            <column name="col6" type="varchar">
+                <dbtype>varchar(11)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??mobile</candidates>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+            </posts>
+        </table>
+        <table name="test_sqlserver">
+            <options>
+                <count>100000</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>int not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col2" type="char">
+                <dbtype>char(6)</dbtype>
+                <ratio>
+                    <item ratio="1">male</item>
+                    <item ratio="1">female</item>
+                </ratio>
+            </column>
+            <column name="col4" type="varchar" nullable="0.5">
+                <dbtype>varchar(64)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??uuid</candidates>
+                </random>
+            </column>
+            <column name="col5" type="varchar">
+                <dbtype>varchar(18)</dbtype>
+                <random>
+                    <min></min>
+                    <max></max>
+                    <candidates>??id</candidates>
+                </random>
+            </column>
+            <column name="col6" type="blob">
+                <dbtype>varbinary(20)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??latin1</candidates>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+            </posts>
+        </table>
+        <table name="test_db2">
+            <options>
+                <count>200</count>
+            </options>
+            <!-- types are : int , long, float ,double, decimal, char, varchar, blob, date , time, timestamp -->
+            <column name="id" type="int" nullable="0">
+                <dbtype>int not null</dbtype>
+                <increment>
+                    <start>1</start>
+                    <step>1</step>
+                </increment>
+            </column>
+            <column name="col1" type="long">
+                <dbtype>decimal</dbtype>
+                <roulette>
+                    <item>1</item>
+                    <item>2</item>
+                    <item>3</item>
+                </roulette>
+            </column>
+            <column name="col2" type="char">
+                <dbtype>char(6)</dbtype>
+                <ratio>
+                    <item ratio="1">male</item>
+                    <item ratio="1">female</item>
+                </ratio>
+            </column>
+            <column name="col4" type="varchar" nullable="0.5">
+                <dbtype>varchar(64)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??uuid</candidates>
+                </random>
+            </column>
+            <column name="col5" type="varchar">
+                <dbtype>varchar(18)</dbtype>
+                <random>
+                    <min></min>
+                    <max></max>
+                    <candidates>??id</candidates>
+                </random>
+            </column>
+            <column name="col6" type="varchar">
+                <dbtype>varchar(11)</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??mobile</candidates>
+                </random>
+            </column>
+            <column name="col7" type="blob">
+                <dbtype>blob</dbtype>
+                <random>
+                    <min>1</min>
+                    <max>10</max>
+                    <candidates>??mobile</candidates>
+                </random>
+            </column>
+            <keys>
+                <key>primary key (id)</key>
+            </keys>
+            <posts>
+            </posts>
+        </table>
+    </tables>
+</config>
