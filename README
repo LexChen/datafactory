@@ -1,3 +1,5 @@
+本项目可以实现向任意数据库中按照配置要求插入测试数据。
+
 使用帮助请参见《DataFactory 使用手册》
 因为部分依赖jar包不在任何maven库中，因此本项目直接引入了本地依赖
 所有依赖均在out/artifacts/datafactory_jar/目录下（除datafacoty.jar）
