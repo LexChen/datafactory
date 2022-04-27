@@ -1,2 +1,2 @@
-*.jar binary
-*.pdf binary
+*.jar -crlf -diff
+*.pdf -crlf -diff
